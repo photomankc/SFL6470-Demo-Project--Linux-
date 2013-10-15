@@ -1,5 +1,5 @@
-#ifndef L6470_SUPPORT_HPP_INCLUDED
-#define L6470_SUPPORT_HPP_INCLUDED
+#ifndef L6470_SUPPORT_H
+#define L6470_SUPPORT_H
 
 // constant definitions for overcurrent thresholds. Write these values to
 //  register dSPIN_OCD_TH to set the level at which an overcurrent even occurs.
@@ -29,7 +29,7 @@ typedef enum DSPIN_OVERCURRENT_CONST
 // First comes the "microsteps per step" options...
 typedef enum DSPIN_STEP_MODE_CONST
 {
-    dSPIN_STEP_MODE_STEP_SEL    = 0x07,  // Mask for these bits only.
+    dSPIN_STEP_MODE_STEP_SEL    = 0x07,  // Mask for these bits.
     dSPIN_STEP_SEL_1            = 0x00,
     dSPIN_STEP_SEL_1_2          = 0x01,
     dSPIN_STEP_SEL_1_4          = 0x02,
@@ -44,14 +44,17 @@ typedef enum DSPIN_STEP_MODE_CONST
 
 typedef enum DSPIN_REG_CONST
 {
-       // ...next, define the SYNC_EN bit. When set, the BUSYN pin will instead
+    //  Define the SYNC_EN bit. When set, the BUSYN pin will instead
     //  output a clock related to the full-step frequency as defined by the
     //  SYNC_SEL bits below.
+    //
     dSPIN_STEP_MODE_SYNC_EN	    = 0x80,  // Mask for this bit
     dSPIN_SYNC_EN               = 0x80,
-    // ...last, define the SYNC_SEL modes. The clock output is defined by
+    
+    //  Define the SYNC_SEL modes. The clock output is defined by
     //  the full-step frequency and the value in these bits- see the datasheet
     //  for a matrix describing that relationship (page 46).
+    //
     dSPIN_STEP_MODE_SYNC_SEL    = 0x70,
     dSPIN_SYNC_SEL_1_2          = 0x00,
     dSPIN_SYNC_SEL_1            = 0x10,
@@ -63,10 +66,11 @@ typedef enum DSPIN_REG_CONST
     dSPIN_SYNC_SEL_64           = 0x70,
 
     // Bit names for the ALARM_EN register.
-    //  Each of these bits defines one potential alarm condition.
-    //  When one of these conditions occurs and the respective bit in ALARM_EN is set,
-    //  the FLAG pin will go low. The register must be queried to determine which event
-    //  caused the alarm.
+    // Each of these bits defines one potential alarm condition.
+    // When one of these conditions occurs and the respective bit in ALARM_EN
+    // is set, the FLAG pin will go low. The register must be queried to
+    // determine which event caused the alarm.
+    //
     dSPIN_ALARM_EN_OVERCURRENT       = 0x01,
     dSPIN_ALARM_EN_THERMAL_SHUTDOWN	 = 0x02,
     dSPIN_ALARM_EN_THERMAL_WARNING   = 0x04,
@@ -76,51 +80,57 @@ typedef enum DSPIN_REG_CONST
     dSPIN_ALARM_EN_SW_TURN_ON        = 0x40,
     dSPIN_ALARM_EN_WRONG_NPERF_CMD   = 0x80,
 
-    // CONFIG register renames.
-
     // Oscillator options.
-    // The dSPIN needs to know what the clock frequency is because it uses that for some
-    //  calculations during operation.
+    //
+    // The dSPIN needs to know what the clock frequency is because it uses
+    // that for some calculations during operation.
+    //
     dSPIN_CONFIG_OSC_SEL                 = 0x000F, // Mask for this bit field.
-    dSPIN_CONFIG_INT_16MHZ               = 0x0000, // Internal 16MHz, no output
-    dSPIN_CONFIG_INT_16MHZ_OSCOUT_2MHZ   = 0x0008, // Default; internal 16MHz, 2MHz output
-    dSPIN_CONFIG_INT_16MHZ_OSCOUT_4MHZ   = 0x0009, // Internal 16MHz, 4MHz output
-    dSPIN_CONFIG_INT_16MHZ_OSCOUT_8MHZ   = 0x000A, // Internal 16MHz, 8MHz output
-    dSPIN_CONFIG_INT_16MHZ_OSCOUT_16MHZ  = 0x000B, // Internal 16MHz, 16MHz output
-    dSPIN_CONFIG_EXT_8MHZ_XTAL_DRIVE     = 0x0004, // External 8MHz crystal
-    dSPIN_CONFIG_EXT_16MHZ_XTAL_DRIVE    = 0x0005, // External 16MHz crystal
-    dSPIN_CONFIG_EXT_24MHZ_XTAL_DRIVE    = 0x0006, // External 24MHz crystal
-    dSPIN_CONFIG_EXT_32MHZ_XTAL_DRIVE    = 0x0007, // External 32MHz crystal
-    dSPIN_CONFIG_EXT_8MHZ_OSCOUT_INVERT  = 0x000C, // External 8MHz crystal, output inverted
-    dSPIN_CONFIG_EXT_16MHZ_OSCOUT_INVERT = 0x000D, // External 16MHz crystal, output inverted
-    dSPIN_CONFIG_EXT_24MHZ_OSCOUT_INVERT = 0x000E, // External 24MHz crystal, output inverted
-    dSPIN_CONFIG_EXT_32MHZ_OSCOUT_INVERT = 0x000F, // External 32MHz crystal, output inverted
+    dSPIN_CONFIG_INT_16MHZ               = 0x0000, // Int 16MHz, no output
+    dSPIN_CONFIG_INT_16MHZ_OSCOUT_2MHZ   = 0x0008, // Int 16MHz, 2MHz output
+    dSPIN_CONFIG_INT_16MHZ_OSCOUT_4MHZ   = 0x0009, // Int 16MHz, 4MHz output
+    dSPIN_CONFIG_INT_16MHZ_OSCOUT_8MHZ   = 0x000A, // Int 16MHz, 8MHz output
+    dSPIN_CONFIG_INT_16MHZ_OSCOUT_16MHZ  = 0x000B, // Int 16MHz, 16MHz output
+    dSPIN_CONFIG_EXT_8MHZ_XTAL_DRIVE     = 0x0004, // Ext 8MHz crystal
+    dSPIN_CONFIG_EXT_16MHZ_XTAL_DRIVE    = 0x0005, // Ext 16MHz crystal
+    dSPIN_CONFIG_EXT_24MHZ_XTAL_DRIVE    = 0x0006, // Ext 24MHz crystal
+    dSPIN_CONFIG_EXT_32MHZ_XTAL_DRIVE    = 0x0007, // Ext 32MHz crystal
+    dSPIN_CONFIG_EXT_8MHZ_OSCOUT_INVERT  = 0x000C, // Ext 8MHz driven, out inv
+    dSPIN_CONFIG_EXT_16MHZ_OSCOUT_INVERT = 0x000D, // Ext 16MHz driven, out inv
+    dSPIN_CONFIG_EXT_24MHZ_OSCOUT_INVERT = 0x000E, // Ext 24MHz driven, out inv
+    dSPIN_CONFIG_EXT_32MHZ_OSCOUT_INVERT = 0x000F, // Ext 32MHz driven, out inv
+    
     // Configure the functionality of the external switch input
+    //
     dSPIN_CONFIG_SW_MODE                 = 0x0010, // Mask for this bit.
-    dSPIN_CONFIG_SW_HARD_STOP            = 0x0000, // Default; hard stop motor on switch.
+    dSPIN_CONFIG_SW_HARD_STOP            = 0x0000, // Hard stop motor on switch.
     dSPIN_CONFIG_SW_USER                 = 0x0010, // Tie to the GoUntil and ReleaseSW
-                                                        //  commands to provide jog function.
-                                                        //  See page 25 of datasheet.
+                                                   // commands to provide jog function.
+                                                   // See page 25 of datasheet.
 
     // Configure the motor voltage compensation mode (see page 34 of datasheet)
+    //
     dSPIN_CONFIG_EN_VSCOMP               = 0x0020,  // Mask for this bit.
-    dSPIN_CONFIG_VS_COMP_DISABLE         = 0x0000,  // Disable motor voltage compensation.
-    dSPIN_CONFIG_VS_COMP_ENABLE          = 0x0020,  // Enable motor voltage compensation.
+    dSPIN_CONFIG_VS_COMP_DISABLE         = 0x0000,  // Disable voltage comp.
+    dSPIN_CONFIG_VS_COMP_ENABLE          = 0x0020,  // Enable voltage comp.
 
     // Configure overcurrent detection event handling
+    //
     dSPIN_CONFIG_OC_SD                   = 0x0080,  // Mask for this bit.
     dSPIN_CONFIG_OC_SD_DISABLE           = 0x0000,  // Bridges do NOT shutdown on OC detect
     dSPIN_CONFIG_OC_SD_ENABLE            = 0x0080,  // Bridges shutdown on OC detect
 
     // Configure the slew rate of the power bridge output
+    //
     dSPIN_CONFIG_POW_SR                  = 0x0300,  // Mask for this bit field.
     dSPIN_CONFIG_SR_180V_us              = 0x0000,  // 180V/us
     dSPIN_CONFIG_SR_290V_us              = 0x0200,  // 290V/us
     dSPIN_CONFIG_SR_530V_us              = 0x0300,  // 530V/us
 
     // Integer divisors for PWM sinewave generation
-    //  See page 32 of the datasheet for more information on this.
-    dSPIN_CONFIG_F_PWM_DEC               = 0x1C00,      // mask for this bit field
+    // See page 32 of the datasheet for more information on this.
+    //
+    dSPIN_CONFIG_F_PWM_DEC               = 0x1C00,  // mask for this bit field
     dSPIN_CONFIG_PWM_MUL_0_625           = (0x00)<<10,
     dSPIN_CONFIG_PWM_MUL_0_75            = (0x01)<<10,
     dSPIN_CONFIG_PWM_MUL_0_875           = (0x02)<<10,
@@ -131,7 +141,8 @@ typedef enum DSPIN_REG_CONST
     dSPIN_CONFIG_PWM_MUL_2               = (0x07)<<10,
 
     // Multiplier for the PWM sinewave frequency
-    dSPIN_CONFIG_F_PWM_INT               = 0xE000,     // mask for this bit field.
+    //
+    dSPIN_CONFIG_F_PWM_INT               = 0xE000,  // mask for this bit field.
     dSPIN_CONFIG_PWM_DIV_1               = (0x00)<<13,
     dSPIN_CONFIG_PWM_DIV_2               = (0x01)<<13,
     dSPIN_CONFIG_PWM_DIV_3               = (0x02)<<13,
@@ -140,18 +151,20 @@ typedef enum DSPIN_REG_CONST
     dSPIN_CONFIG_PWM_DIV_6               = (0x05)<<13,
     dSPIN_CONFIG_PWM_DIV_7               = (0x06)<<13,
 
-    // Status register bit renames- read-only bits conferring information about the
-    //  device to the user.
-    dSPIN_STATUS_HIZ                     = 0x0001, // high when bridges are in HiZ mode
-    dSPIN_STATUS_BUSY                    = 0x0002, // mirrors BUSY pin
-    dSPIN_STATUS_SW_F                    = 0x0004, // low when switch open, high when closed
-    dSPIN_STATUS_SW_EVN                  = 0x0008, // active high, set on switch falling edge,
-                                                        //  cleared by reading STATUS
+    // Status register bit renames:
+    // Read-only bits conferring information about the device to the user.
+    //
+    dSPIN_STATUS_HIZ                     = 0x0001, // 1 when bridges are HiZ.
+    dSPIN_STATUS_BUSY                    = 0x0002, // Mirrors BUSY pin.
+    dSPIN_STATUS_SW_F                    = 0x0004, // 0 - switch open, 1 - closed
+    dSPIN_STATUS_SW_EVN                  = 0x0008, // active high, set on switch
+                                                   // falling edge, cleared by
+                                                   // reading STATUS.
     dSPIN_STATUS_DIR                     = 0x0010, // Indicates current motor direction.
-                                                        //  High is FWD, Low is REV.
+                                                   // 1 - FWD, 0 - REV.
     dSPIN_STATUS_NOTPERF_CMD             = 0x0080, // Last command not performed.
     dSPIN_STATUS_WRONG_CMD               = 0x0100, // Last command not valid.
-    dSPIN_STATUS_UVLO                    = 0x0200, // Undervoltage lockout is active
+    dSPIN_STATUS_UVLO                    = 0x0200, // Undervoltage lockout active.
     dSPIN_STATUS_TH_WRN                  = 0x0400, // Thermal warning
     dSPIN_STATUS_TH_SD                   = 0x0800, // Thermal shutdown
     dSPIN_STATUS_OCD                     = 0x1000, // Overcurrent detected
@@ -160,11 +173,12 @@ typedef enum DSPIN_REG_CONST
     dSPIN_STATUS_SCK_MOD                 = 0x8000, // Step clock mode is active
 
     // Status register motor status field
-    dSPIN_STATUS_MOT_STATUS               = 0x0060,      // field mask
+    //
+    dSPIN_STATUS_MOT_STATUS               = 0x0060,       // field mask
     dSPIN_STATUS_MOT_STATUS_STOPPED       = (0x0000)<<13, // Motor stopped
     dSPIN_STATUS_MOT_STATUS_ACCELERATION  = (0x0001)<<13, // Motor accelerating
     dSPIN_STATUS_MOT_STATUS_DECELERATION  = (0x0002)<<13, // Motor decelerating
-    dSPIN_STATUS_MOT_STATUS_CONST_SPD     = (0x0003)<<13, // Motor at constant speed
+    dSPIN_STATUS_MOT_STATUS_CONST_SPD     = (0x0003)<<13, // Motor at speed
 
     /* dSPIN direction options */
     dSPIN_FWD  = 0x01,
@@ -178,7 +192,6 @@ typedef enum DSPIN_REG_CONST
 
 typedef enum dSPIN_COMMANDS
 {
-        //dSPIN commands
     dSPIN_NOP                  = 0x00,
     dSPIN_SET_PARAM            = 0x00,
     dSPIN_GET_PARAM            = 0x20,
@@ -203,8 +216,9 @@ typedef enum dSPIN_COMMANDS
 
 typedef enum dSPIN_REG_ADDR_CONST
 {
-    // Register address redefines.
-    //  See the dSPIN_Param_Handler() function for more info about these.
+    // Register address redefines:
+    // See the dSPIN_Param_Handler() function for more info about these.
+    //
     dSPIN_ABS_POS              = 0x01,
     dSPIN_EL_POS               = 0x02,
     dSPIN_MARK                 = 0x03,
@@ -245,6 +259,28 @@ typedef enum dSPIN_ERROR_CODE
     dSPIN_ERR_STALLB          = 64,
 } dSPIN_ERROR_CODE;
 
-
+/*
+ Copyright (C) 2013 Kyle Crane
+ 
+ Adapted from example code for the SparkFun Breakout Board BOB-10859
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ of the Software, and to permit persons to whom the Software is furnished to do
+ so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
 
 #endif // SF-L6470-SUPPORT_HPP_INCLUDED
