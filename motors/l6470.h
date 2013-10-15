@@ -94,6 +94,10 @@ protected:
     uint32_t    procParam(uint32_t value, uint8_t bit_len);
     uint8_t     dspin_xfer(uint8_t data);
     uint8_t     dirInvert(uint8_t dir);
+    
+private:
+    L6470(const L6470&);            // Disable copy constructor
+    L6470& operator=(const L6470&); // Disable assignment operator
 };
 
 
